@@ -1,47 +1,53 @@
 <script lang="ts">
-  import svelteLogo from './assets/svelte.svg'
-  import viteLogo from '/vite.svg'
-  import Counter from './lib/Counter.svelte'
+    import { bind } from "svelte/internal";
+import PlayBox from "./lib/playBox.svelte";
+
+    let types: Array<{ index: number; type: "number" | "empty" | "button" }> = [
+        { index: 0, type: "number" },
+        { index: 1, type: "number" },
+        { index: 2, type: "button" },
+        { index: 3, type: "empty" },
+        { index: 4, type: "empty" },
+    ];
+    function shift() {
+        types = [
+            { index: types[types.length - 1].index + 1, type: "number" },
+            ...types.slice(0,-1)
+        ];
+    }
 </script>
 
-<main>
-  <div>
-    <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-      <img src={viteLogo} class="logo" alt="Vite Logo" />
-    </a>
-    <a href="https://svelte.dev" target="_blank" rel="noreferrer">
-      <img src={svelteLogo} class="logo svelte" alt="Svelte Logo" />
-    </a>
-  </div>
-  <h1>Vite + Svelte</h1>
-
-  <div class="card">
-    <Counter />
-  </div>
-
-  <p>
-    Check out <a href="https://github.com/sveltejs/kit#readme" target="_blank" rel="noreferrer">SvelteKit</a>, the official Svelte app framework powered by Vite!
-  </p>
-
-  <p class="read-the-docs">
-    Click on the Vite and Svelte logos to learn more
-  </p>
+<main
+    class="
+    w-screen h-screen
+    flex justify-center items-center
+    "
+>
+    <div class="background -z-50">
+        <div
+            class="absolute inset-0 bg-gradient-to-br from-slate-100 to-slate-400"
+        />
+        <div
+            class="absolute inset-0"
+            style="
+        background-image: radial-gradient(#0003 5%, transparent 5%);
+        background-position: 0 0;
+        background-size: 20px 20px;
+    "
+        />
+    </div>
+    <div
+        class="
+    w-1/3 h-full
+    bg-slate-50 shadow-2xl overflow-hidden
+    flex justify-center items-center relative
+    "
+    >
+        {#each types as type, index (type.index)}
+            <PlayBox {shift} type={type.type} {index}/>
+        {/each}
+    </div>
 </main>
 
 <style>
-  .logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-    transition: filter 300ms;
-  }
-  .logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
-  }
-  .logo.svelte:hover {
-    filter: drop-shadow(0 0 2em #ff3e00aa);
-  }
-  .read-the-docs {
-    color: #888;
-  }
 </style>
